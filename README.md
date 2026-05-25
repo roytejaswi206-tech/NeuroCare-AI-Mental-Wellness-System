@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # NeuroCare
 
 **AI-Based Mental Wellness Support System**
@@ -288,3 +289,7 @@ Keep it simple and honest. A suggested 5-minute walkthrough:
 - Photographs from **Unsplash** (no attribution required).
 
 Built by AI & ML undergraduate students for an academic micro project.
+=======
+# NeuroCare-AI-Mental-Wellness-System
+AI-Based Mental Wellness Support System built using React, Firebase, Flask, TextBlob and VADER.
+>>>>>>> 20ff3c1bcb0ae8214e94cf43a774cf36122fe3f9
