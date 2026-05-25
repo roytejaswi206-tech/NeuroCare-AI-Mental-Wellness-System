@@ -1,0 +1,20 @@
+# Render deployment blueprint for the NeuroCare backend.
+# Push the repo to GitHub and pick this file in the Render dashboard.
+
+services:
+  - type: web
+    name: neurocare-backend
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt && python seed.py
+    startCommand: gunicorn app:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: https://your-vercel-domain.vercel.app
+      - key: FIREBASE_CREDENTIALS_PATH
+        value: ""
