@@ -15,6 +15,10 @@ services:
       - key: JWT_SECRET_KEY
         generateValue: true
       - key: CORS_ORIGINS
-        value: https://your-vercel-domain.vercel.app
+        # Set this in the Render dashboard to your Vercel URL(s), comma-separated.
+        # Example: https://neurocare-final.vercel.app,https://neurocare-final-git-main-yourname.vercel.app
+        sync: false
       - key: FIREBASE_CREDENTIALS_PATH
         value: ""
+      - key: PYTHON_VERSION
+        value: 3.11.9
