@@ -10,15 +10,18 @@ export default function Navbar() {
   const links = user
     ? [
         { to: "/dashboard", label: "Dashboard" },
-        { to: "/track", label: "Track Mood" },
-        { to: "/history", label: "History" },
+        { to: "/track", label: "Track" },
+        { to: "/insights", label: "Insights" },
+        { to: "/journal", label: "Journal" },
+        { to: "/exercises", label: "Exercises" },
         { to: "/resources", label: "Resources" },
-        { to: "/emergency", label: "Emergency" },
+        { to: "/emergency", label: "Help" },
       ]
     : [
         { to: "/", label: "Home" },
+        { to: "/exercises", label: "Exercises" },
         { to: "/resources", label: "Resources" },
-        { to: "/emergency", label: "Emergency" },
+        { to: "/emergency", label: "Help" },
       ];
 
   function handleLogout() {

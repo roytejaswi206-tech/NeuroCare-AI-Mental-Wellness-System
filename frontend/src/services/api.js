@@ -40,11 +40,26 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    const msg =
-      err.response?.data?.error ||
-      err.message ||
-      "Something went wrong. Please try again.";
-    err.friendlyMessage = msg;
+    // Distinguish network/CORS failures from real server errors so the UI
+    // can show a useful message instead of just "Network Error".
+    let friendly = "Something went wrong. Please try again.";
+
+    if (err.response) {
+      // Backend responded with an error status (400, 401, 500, ...).
+      friendly = err.response.data?.error || `Server error (${err.response.status}).`;
+    } else if (err.code === "ECONNABORTED") {
+      friendly = "The server took too long to respond. It may be waking up - try again in a moment.";
+    } else if (err.message === "Network Error") {
+      // Most likely cause: backend cold start on Railway, or CORS_ORIGINS not
+      // including this frontend URL. Either way, the user can't tell.
+      friendly =
+        "Could not reach the server. It may be starting up after a period of " +
+        "inactivity - please wait 10 seconds and try again.";
+    } else if (err.message) {
+      friendly = err.message;
+    }
+
+    err.friendlyMessage = friendly;
     return Promise.reject(err);
   }
 );

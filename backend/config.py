@@ -23,13 +23,31 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # CORS
-    CORS_ORIGINS = [
-        origin.strip()
-        for origin in os.getenv(
-            "CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173"
-        ).split(",")
-        if origin.strip()
-    ]
+    #
+    # CORS_ORIGINS can be:
+    #   "*"                       - allow any origin (simplest, fine for a student demo)
+    #   "a.com,b.com"             - explicit allow-list
+    #   "https://*.vercel.app"    - wildcard subdomain match (handles Vercel preview URLs)
+    #
+    # We default to "*" so the deployed frontend works even if the Railway env
+    # var is forgotten. Override with a tighter list in production if desired.
+    _raw_cors = os.getenv(
+        "CORS_ORIGINS",
+        "*,http://localhost:5173,http://127.0.0.1:5173",
+    )
+    _cors_entries = [o.strip() for o in _raw_cors.split(",") if o.strip()]
+
+    if "*" in _cors_entries:
+        # Flask-CORS treats "*" specially: any origin is allowed.
+        CORS_ORIGINS = "*"
+    else:
+        # Convert wildcard patterns like "https://*.vercel.app" to regex.
+        import re as _re
+        CORS_ORIGINS = [
+            _re.compile("^" + _re.escape(o).replace(r"\*", ".*") + "$")
+            if "*" in o else o
+            for o in _cors_entries
+        ]
 
     # Firebase (optional)
     FIREBASE_CREDENTIALS_PATH = os.getenv("FIREBASE_CREDENTIALS_PATH", "").strip()

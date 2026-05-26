@@ -82,7 +82,8 @@ def list_moods():
 @moods_bp.route("/stats", methods=["GET"])
 @jwt_required()
 def stats():
-    """Last-7-days stress trend and mood distribution for charts."""
+    """Last-7-days stress trend, mood distribution, sentiment ratio,
+    and a simple direction read for the Insights / Dashboard pages."""
     user_id = int(get_jwt_identity())
     since = datetime.utcnow() - timedelta(days=7)
 
@@ -108,9 +109,35 @@ def stats():
         for mood, count in Counter(e.mood for e in entries).items()
     ]
 
+    # Sentiment ratio (count of each note-sentiment label).
+    # Entries without a note are skipped so the ratio reflects actual signals.
+    sent_counts = Counter(
+        e.sentiment for e in entries if e.sentiment and e.note
+    )
+    sentiment_ratio = {
+        "positive": sent_counts.get("positive", 0),
+        "neutral":  sent_counts.get("neutral", 0),
+        "negative": sent_counts.get("negative", 0),
+    }
+
+    # Trend direction: compare the first half of the week's avg stress to the
+    # second half. Needs at least 2 days of data to be meaningful.
+    trend_direction = "stable"
+    if len(trend) >= 2:
+        mid = len(trend) // 2 or 1
+        first_avg = sum(t["avg_stress"] for t in trend[:mid]) / mid
+        second_avg = sum(t["avg_stress"] for t in trend[mid:]) / (len(trend) - mid)
+        delta = second_avg - first_avg
+        if delta <= -0.7:
+            trend_direction = "improving"   # stress went down
+        elif delta >= 0.7:
+            trend_direction = "worsening"   # stress went up
+
     return jsonify({
         "trend": trend,
         "distribution": distribution,
+        "sentiment_ratio": sentiment_ratio,
+        "trend_direction": trend_direction,
         "total_entries": len(entries),
     }), 200
 

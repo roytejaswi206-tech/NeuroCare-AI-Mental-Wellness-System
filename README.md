@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # NeuroCare
 
 **AI-Based Mental Wellness Support System**
@@ -249,37 +249,6 @@ email/password login keeps working.
 
 ---
 
-## Viva notes (how to present this project)
-
-Keep it simple and honest. A suggested 5-minute walkthrough:
-
-1. **Problem (30s)** – "Many students struggle with stress and anxiety but
-   don't track how they feel day-to-day. NeuroCare gives them a small, calm
-   way to do that."
-2. **What it is (30s)** – "A React + Flask web app with SQLite. Users log a
-   mood and a short note. A simple AI looks at the tone of the note and
-   gives a wellness tip."
-3. **Demo (2 min)** – Register → log a happy mood with a positive note → log
-   a sad mood with a negative note → show the dashboard suggestion changes →
-   show the history charts → show the resources and emergency pages.
-4. **AI part (1 min)** – Open `backend/ai/sentiment.py`. Show that we use
-   TextBlob + VADER, average their scores, and pick a suggestion from a
-   dictionary indexed by stress level + sentiment. Emphasise it is
-   rule-based and **not** a medical diagnosis.
-5. **Code tour (1 min)** – Show `models/`, `routes/`, the React `pages/`
-   folder. Point out that the structure mirrors what the spec asked for.
-
-**Likely questions & short answers**
-
-- *Why TextBlob + VADER and not BERT?* Lightweight, deterministic, runs
-  instantly on free hosting, easy to explain in a 4th-semester project.
-- *Is this a medical tool?* No. The disclaimer is on every page.
-- *Where is the data stored?* SQLite, one file (`backend/neurocare.db`).
-- *How is the password kept safe?* Hashed with `bcrypt` before storage.
-- *Why JWT?* Stateless, easy to send from a React frontend in an
-  `Authorization` header.
-
----
 
 ## Credits
 
@@ -289,4 +258,14 @@ Keep it simple and honest. A suggested 5-minute walkthrough:
 - Photographs from **Unsplash** (no attribution required).
 
 Built by AI & ML undergraduate students for an academic micro project.
-=======
+
+
+---
+
+## Live Deployment
+
+### Frontend
+https://your-vercel-url.vercel.app
+
+### Backend
+https://neurocare-backend-production.up.railway.app

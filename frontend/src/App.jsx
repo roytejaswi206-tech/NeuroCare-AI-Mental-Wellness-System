@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Disclaimer from "./components/Disclaimer";
+import ApiStatus from "./components/ApiStatus";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import Home from "./pages/Home";
@@ -11,6 +12,9 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import MoodTracker from "./pages/MoodTracker";
 import History from "./pages/History";
+import Insights from "./pages/Insights";
+import Journal from "./pages/Journal";
+import Exercises from "./pages/Exercises";
 import Resources from "./pages/Resources";
 import ResourceCategory from "./pages/ResourceCategory";
 import Emergency from "./pages/Emergency";
@@ -21,6 +25,7 @@ export default function App() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <Disclaimer />
+      <ApiStatus />
 
       <main className="flex-1">
         <Routes>
@@ -32,6 +37,7 @@ export default function App() {
           <Route path="/resources" element={<Resources />} />
           <Route path="/resources/:category" element={<ResourceCategory />} />
           <Route path="/emergency" element={<Emergency />} />
+          <Route path="/exercises" element={<Exercises />} />
 
           {/* Protected pages */}
           <Route
@@ -55,6 +61,22 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <History />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/insights"
+            element={
+              <ProtectedRoute>
+                <Insights />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/journal"
+            element={
+              <ProtectedRoute>
+                <Journal />
               </ProtectedRoute>
             }
           />

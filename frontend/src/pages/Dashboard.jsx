@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import { getMoodMeta, formatDate } from "../utils/moods";
+import { getDailyTip } from "../utils/dailyTip";
 import MoodInsights from "../components/MoodInsights";
 import Spinner from "../components/Spinner";
 
@@ -51,6 +52,7 @@ export default function Dashboard() {
   }
 
   const hasData = recent.length > 0;
+  const dailyTip = getDailyTip();
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
@@ -62,6 +64,17 @@ export default function Dashboard() {
         <p className="text-sm text-gray-500">
           Here's a quick look at how you've been feeling.
         </p>
+      </div>
+
+      {/* Daily wellness tip strip - rotates each day, same for everyone */}
+      <div className="mb-6 rounded-xl border border-teal-200 bg-teal-soft px-4 py-3 flex items-start gap-3">
+        <span className="text-2xl shrink-0" aria-hidden>{dailyTip.icon}</span>
+        <div className="flex-1">
+          <p className="text-xs uppercase tracking-wide text-teal-700 font-medium mb-0.5">
+            Today's wellness tip
+          </p>
+          <p className="text-sm text-gray-800 leading-snug">{dailyTip.text}</p>
+        </div>
       </div>
 
       {/* Top row: latest mood + suggestion */}
