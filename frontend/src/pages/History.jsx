@@ -64,9 +64,9 @@ export default function History() {
                   <Line
                     type="monotone"
                     dataKey="avg_stress"
-                    stroke="#4663dc"
-                    strokeWidth={2}
-                    dot={{ r: 3 }}
+                    stroke="#6C63FF"
+                    strokeWidth={2.5}
+                    dot={{ r: 3, fill: "#6C63FF" }}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -88,7 +88,7 @@ export default function History() {
                   <YAxis allowDecimals={false} fontSize={11} tick={{ fill: "#6b7280" }} />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="count" fill="#7fb8ad" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="count" fill="#8B5CF6" radius={[8, 8, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

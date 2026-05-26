@@ -194,7 +194,7 @@ function Charts({ stats }) {
                 <XAxis dataKey="date" fontSize={11} tick={{ fill: "#6b7280" }} />
                 <YAxis domain={[0, 10]} fontSize={11} tick={{ fill: "#6b7280" }} />
                 <Tooltip />
-                <Line type="monotone" dataKey="avg_stress" stroke="#4663dc" strokeWidth={2} dot={{ r: 3 }} />
+                <Line type="monotone" dataKey="avg_stress" stroke="#6C63FF" strokeWidth={2.5} dot={{ r: 3, fill: "#6C63FF" }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -213,7 +213,7 @@ function Charts({ stats }) {
                 <XAxis dataKey="mood" fontSize={11} tick={{ fill: "#6b7280" }} />
                 <YAxis allowDecimals={false} fontSize={11} tick={{ fill: "#6b7280" }} />
                 <Tooltip />
-                <Bar dataKey="count" fill="#7fb8ad" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="count" fill="#8B5CF6" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

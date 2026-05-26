@@ -1,5 +1,9 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import {
+  LayoutDashboard, PencilLine, BarChart3, BookOpen, Wind,
+  HeartHandshake, LifeBuoy, Home as HomeIcon, Menu, X, Brain,
+} from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
@@ -9,19 +13,19 @@ export default function Navbar() {
 
   const links = user
     ? [
-        { to: "/dashboard", label: "Dashboard" },
-        { to: "/track", label: "Track" },
-        { to: "/insights", label: "Insights" },
-        { to: "/journal", label: "Journal" },
-        { to: "/exercises", label: "Exercises" },
-        { to: "/resources", label: "Resources" },
-        { to: "/emergency", label: "Help" },
+        { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+        { to: "/track",     label: "Track",     icon: PencilLine },
+        { to: "/insights",  label: "Insights",  icon: BarChart3 },
+        { to: "/journal",   label: "Journal",   icon: BookOpen },
+        { to: "/exercises", label: "Exercises", icon: Wind },
+        { to: "/resources", label: "Resources", icon: HeartHandshake },
+        { to: "/emergency", label: "Help",      icon: LifeBuoy },
       ]
     : [
-        { to: "/", label: "Home" },
-        { to: "/exercises", label: "Exercises" },
-        { to: "/resources", label: "Resources" },
-        { to: "/emergency", label: "Help" },
+        { to: "/",          label: "Home",      icon: HomeIcon },
+        { to: "/exercises", label: "Exercises", icon: Wind },
+        { to: "/resources", label: "Resources", icon: HeartHandshake },
+        { to: "/emergency", label: "Help",      icon: LifeBuoy },
       ];
 
   function handleLogout() {
@@ -31,30 +35,33 @@ export default function Navbar() {
   }
 
   const linkClass = ({ isActive }) =>
-    `px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+    `inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
       isActive
         ? "text-primary-700 bg-primary-50"
         : "text-gray-600 hover:text-primary-600 hover:bg-gray-50"
     }`;
 
   return (
-    <nav className="bg-white border-b border-gray-100 sticky top-0 z-30">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+    <nav className="bg-white/80 backdrop-blur border-b border-gray-100 sticky top-0 z-30">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-14">
           {/* Brand */}
           <NavLink
             to={user ? "/dashboard" : "/"}
             className="flex items-center gap-2 font-semibold text-primary-700"
           >
-            <span className="text-xl">🧠</span>
+            <span className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 text-white">
+              <Brain size={18} />
+            </span>
             <span>NeuroCare</span>
           </NavLink>
 
           {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-0.5">
             {links.map((l) => (
               <NavLink key={l.to} to={l.to} className={linkClass} end={l.to === "/"}>
-                {l.label}
+                <l.icon size={15} aria-hidden />
+                <span>{l.label}</span>
               </NavLink>
             ))}
             {user ? (
@@ -74,23 +81,16 @@ export default function Navbar() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setOpen((o) => !o)}
-            className="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100"
+            className="lg:hidden p-2 rounded-xl text-gray-600 hover:bg-gray-100"
             aria-label="Toggle menu"
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              {open ? (
-                <path d="M6 6l12 12M18 6L6 18" />
-              ) : (
-                <path d="M4 7h16M4 12h16M4 17h16" />
-              )}
-            </svg>
+            {open ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
         {/* Mobile menu */}
         {open && (
-          <div className="md:hidden pb-3 space-y-1">
+          <div className="lg:hidden pb-3 space-y-1">
             {links.map((l) => (
               <NavLink
                 key={l.to}
@@ -99,13 +99,14 @@ export default function Navbar() {
                 className={linkClass}
                 end={l.to === "/"}
               >
-                {l.label}
+                <l.icon size={15} aria-hidden />
+                <span>{l.label}</span>
               </NavLink>
             ))}
             {user ? (
               <button
                 onClick={handleLogout}
-                className="w-full text-left nc-btn-secondary"
+                className="w-full text-left nc-btn-secondary mt-2"
               >
                 Log out
               </button>
@@ -113,7 +114,7 @@ export default function Navbar() {
               <NavLink
                 to="/login"
                 onClick={() => setOpen(false)}
-                className="w-full nc-btn-primary"
+                className="block w-full nc-btn-primary mt-2 text-center"
               >
                 Sign in
               </NavLink>

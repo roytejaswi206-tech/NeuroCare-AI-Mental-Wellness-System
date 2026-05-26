@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { BarChart3, Activity, Flame, CalendarDays, Sparkles } from "lucide-react";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import { getMoodMeta, formatDate } from "../utils/moods";
@@ -67,10 +68,12 @@ export default function Dashboard() {
       </div>
 
       {/* Daily wellness tip strip - rotates each day, same for everyone */}
-      <div className="mb-6 rounded-xl border border-teal-200 bg-teal-soft px-4 py-3 flex items-start gap-3">
-        <span className="text-2xl shrink-0" aria-hidden>{dailyTip.icon}</span>
+      <div className="mb-6 rounded-2xl border border-primary-100 bg-gradient-to-r from-primary-50 to-accent-soft px-4 py-3 flex items-start gap-3 shadow-card">
+        <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white shadow-sm text-2xl shrink-0" aria-hidden>
+          {dailyTip.icon}
+        </span>
         <div className="flex-1">
-          <p className="text-xs uppercase tracking-wide text-teal-700 font-medium mb-0.5">
+          <p className="text-xs uppercase tracking-wide text-primary-700 font-semibold mb-0.5">
             Today's wellness tip
           </p>
           <p className="text-sm text-gray-800 leading-snug">{dailyTip.text}</p>
@@ -89,16 +92,22 @@ export default function Dashboard() {
             <EmptyState onSeed={handleLoadDemo} seeding={seeding} />
           )}
         </div>
-        <div className="nc-card bg-primary-50 border-primary-100">
-          <h2 className="text-sm font-medium text-primary-700 uppercase tracking-wide mb-2">
-            Today's tip
-          </h2>
-          <p className="text-sm text-gray-700 leading-relaxed">
+        <div className="nc-card bg-gradient-to-br from-primary-500 to-primary-700 border-primary-600 text-white">
+          <div className="flex items-center gap-2 mb-2">
+            <Sparkles size={16} aria-hidden />
+            <h2 className="text-sm font-semibold uppercase tracking-wide">
+              Your AI suggestion
+            </h2>
+          </div>
+          <p className="text-sm text-white/90 leading-relaxed">
             {latest?.suggestion ||
               "Try a short check-in. Even a 30-second pause helps you notice how you really feel."}
           </p>
-          <Link to="/track" className="mt-4 nc-btn-primary inline-flex">
-            New check-in
+          <Link
+            to="/track"
+            className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-white/15 hover:bg-white/25 backdrop-blur px-3 py-2 text-sm font-medium transition-colors"
+          >
+            New check-in →
           </Link>
         </div>
       </div>
@@ -106,9 +115,15 @@ export default function Dashboard() {
       {hasData && <MoodInsights stats={stats} recent={recent} />}
 
       {/* Stats summary */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-        <StatCard label="Check-ins (7d)" value={stats?.total_entries ?? 0} />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         <StatCard
+          icon={CalendarDays}
+          label="Check-ins (7d)"
+          value={stats?.total_entries ?? 0}
+          tone="indigo"
+        />
+        <StatCard
+          icon={Activity}
           label="Avg. stress (7d)"
           value={
             stats?.trend?.length
@@ -118,8 +133,10 @@ export default function Dashboard() {
                 ).toFixed(1)
               : "–"
           }
+          tone="rose"
         />
         <StatCard
+          icon={Flame}
           label="Most common mood"
           value={
             stats?.distribution?.length
@@ -130,8 +147,14 @@ export default function Dashboard() {
                 ).label
               : "–"
           }
+          tone="amber"
         />
-        <StatCard label="Active days" value={stats?.trend?.length ?? 0} />
+        <StatCard
+          icon={BarChart3}
+          label="Active days"
+          value={stats?.trend?.length ?? 0}
+          tone="emerald"
+        />
       </div>
 
       {/* Recent entries */}
@@ -208,9 +231,20 @@ function LatestMoodCard({ mood }) {
   );
 }
 
-function StatCard({ label, value }) {
+function StatCard({ label, value, icon: Icon, tone = "indigo" }) {
+  const tones = {
+    indigo:  "bg-primary-50 text-primary-600",
+    rose:    "bg-rose-50 text-rose-600",
+    amber:   "bg-amber-50 text-amber-600",
+    emerald: "bg-emerald-50 text-emerald-600",
+  };
   return (
-    <div className="nc-card">
+    <div className="nc-card-hover">
+      {Icon && (
+        <div className={`inline-flex items-center justify-center w-9 h-9 rounded-xl mb-2 ${tones[tone] || tones.indigo}`}>
+          <Icon size={18} />
+        </div>
+      )}
       <p className="text-xs text-gray-500 mb-1">{label}</p>
       <p className="text-lg sm:text-xl font-semibold text-gray-900">{value}</p>
     </div>
